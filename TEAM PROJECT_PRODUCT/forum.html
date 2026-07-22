@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Help Forum</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  border: 20px solid #e6a7f0;
+  box-sizing: border-box;
+  height: 100vh;
+  display: flex;
+  background: #f4f8ff;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  width: 300px;
+  padding: 40px;
+  background: #ffffff;
+  border-right: 1px solid #eee;
+  box-sizing: border-box;
+}
+.left-panel h3 { margin-top: 0; }
+input { width: 100%; padding: 10px; border-radius: 20px; border: 1px solid #ccc; margin-bottom: 10px; box-sizing: border-box; }
+button { padding: 8px 14px; border-radius: 20px; border: none; background: #87CEEB; color: white; cursor: pointer; margin-bottom: 15px; }
+button:hover { background: #6bb7dd; }
+
+/* RIGHT FEED */
+.feed { flex: 1; padding: 30px; overflow-y: auto; }
+.post { background-color: #D8B4F8 !important; padding: 20px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+.post-text { font-size: 16px; margin-bottom: 10px; }
+.author { font-size: 12px; opacity: 0.6; margin-bottom: 10px; }
+.reply { background-color: #87CEEB !important; padding: 10px; border-radius: 15px; margin-bottom: 8px; font-size: 14px; }
+.reply-box { display: flex; gap: 10px; margin-top: 10px; }
+.reply-box input { flex: 1; margin: 0; }
+.delete-btn { color: red; font-size: 12px; cursor: pointer; float: right; }
+
+/* Navigation buttons */
+.prev-btn, .next-btn {
+  position: fixed;
+  bottom: 20px;
+  padding: 14px 24px;
+  font-size: 20px;
+  text-decoration: none;
+  border-radius: 12px;
+  color: white;
+}
+.prev-btn { left: 40px; background: rgb(239, 135, 245); }
+.next-btn { right: 40px; background: rgb(239, 135, 245);}
+</style>
+</head>
+
+<body>
+
+<!-- Navigation buttons -->
+<a href="subjects.html" class="prev-btn">⬅ Back</a>
+<a href="whiteboard.html" class="next-btn">Next</a>
+
+<!-- LEFT SIDE -->
+<div class="left-panel">
+<h3>Ask a Question</h3>
+<input type="text" id="questionInput" placeholder="Type your question...">
+<button onclick="postQuestion()">Post</button>
+<input type="text" id="searchInput" placeholder="Search..." onkeyup="searchQuestions()">
+</div>
+
+<!-- RIGHT SIDE FEED -->
+<div class="feed" id="feed"></div>
+
+<script>
+let forumData = JSON.parse(localStorage.getItem("forumData")) || [];
+let currentUser = localStorage.getItem("currentUser");
+
+let postsPerPage = 5;
+let currentPage = 0;
+
+const questionInput = document.getElementById("questionInput");
+const feed = document.getElementById("feed");
+const searchInput = document.getElementById("searchInput");
+
+if (!currentUser) {
+  currentUser = prompt("Enter your name:") || "Anonymous";
+  localStorage.setItem("currentUser", currentUser);
+}
+
+function saveData() { localStorage.setItem("forumData", JSON.stringify(forumData)); }
+function getTime() { return new Date().toLocaleString(); }
+
+function postQuestion() {
+  const text = questionInput.value.trim();
+  if (!text) return;
+
+  forumData.unshift({ text, author: currentUser, time: getTime(), replies: [] });
+  saveData();
+  questionInput.value = "";
+  renderPosts();
+}
+
+function renderPosts(data = forumData) {
+  feed.innerHTML = "";
+  const start = currentPage * postsPerPage;
+  const visiblePosts = data.slice(start, start + postsPerPage);
+
+  visiblePosts.forEach((post, index) => {
+    const realIndex = start + index;
+    const div = document.createElement("div");
+    div.className = "post";
+
+    div.innerHTML = `
+      <div class="post-text">${post.text} ${post.author === currentUser ? `<span class="delete-btn" onclick="deletePost(${realIndex})">Delete</span>` : ""}</div>
+      <div class="author">Posted by ${post.author} • ${post.time}</div>
+      <div id="replies-${realIndex}"></div>
+      <div class="reply-box">
+        <input type="text" placeholder="Write a reply..." onkeydown="handleReplyEnter(event, ${realIndex})">
+        <button onclick="addReply(${realIndex})">Reply</button>
+      </div>
+    `;
+
+    feed.appendChild(div);
+
+    const repliesDiv = div.querySelector(`#replies-${realIndex}`);
+    post.replies.forEach((r,i) => {
+      repliesDiv.innerHTML += `
+        <div class="reply">
+          ${r.text} ${r.author === currentUser ? `<span class="delete-btn" onclick="deleteReply(${realIndex}, ${i})">Delete</span>` : ""}
+          <div class="author">by ${r.author} • ${r.time}</div>
+        </div>
+      `;
+    });
+  });
+}
+
+function addReply(postIndex) {
+  const input = document.querySelectorAll(".reply-box input")[postIndex % postsPerPage];
+  const text = input.value.trim();
+  if (!text) return;
+
+  forumData[postIndex].replies.push({ text, author: currentUser, time: getTime() });
+  saveData();
+  renderPosts();
+}
+
+function handleReplyEnter(e, index) {
+  if(e.key === "Enter") { e.preventDefault(); addReply(index); }
+}
+
+function deletePost(index) { if(confirm("Delete this post?")) { forumData.splice(index,1); saveData(); renderPosts(); } }
+function deleteReply(postIndex, replyIndex) { forumData[postIndex].replies.splice(replyIndex,1); saveData(); renderPosts(); }
+
+function searchQuestions() {
+  const value = searchInput.value.toLowerCase();
+  const filtered = forumData.filter(post => post.text.toLowerCase().includes(value));
+  renderPosts(filtered);
+}
+
+questionInput.addEventListener("keydown", function(e) {
+  if(e.key === "Enter"){ e.preventDefault(); postQuestion(); }
+});
+
+renderPosts();
+</script>
+</body>
+</html>

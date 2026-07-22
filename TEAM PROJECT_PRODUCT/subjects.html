@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Portal - Subjects</title>
+<style>
+*{ 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: Arial, sans-serif; 
+} 
+html, body
+{ 
+    margin: 0; 
+    padding: 0; 
+} 
+body
+{ 
+    background: linear-gradient(to right, #f5edff, #e9d5ff); 
+}
+/* HEADER (Rounded on all sides, full width) */ 
+header
+{ 
+    background: #D8B4F8; 
+    color: white; 
+    text-align: center; 
+    padding: 25px; 
+    font-size: 28px; 
+    font-weight: bold; 
+    border-radius: 40px; 
+    margin: 15px; 
+} 
+/* GRID */ 
+.container
+{ 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; 
+    padding: 40px; 
+} 
+/* CARDS */ 
+.card
+{ 
+    position: relative; 
+    height: 230px; 
+    border-radius: 20px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    color: white; 
+    font-size: 20px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    overflow: hidden; 
+    transition: 0.3s ease; 
+    background-size: cover; 
+    background-position: center; 
+    /* Brighter photos */ 
+    filter: brightness(1.15) contrast(1.05); 
+} 
+/* Lighter overlay */ 
+.card::before 
+{ 
+    content: ""; 
+    position: absolute; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(155, 89, 182, 0.30); 
+} 
+.card:hover
+{ 
+    transform: translateY(-6px); 
+} 
+/* SUBJECT HEADINGS */ 
+.card h2 
+{
+    position: relative; 
+    z-index: 2; 
+    text-align: center; 
+    padding: 12px 22px; 
+    background: #D8B4F8; 
+    border-radius: 50px; 
+    color: white; 
+} 
+/* SAME IMAGES */ 
+.architecture 
+{ 
+    background: url('https://images.unsplash.com/photo-1518770660439-4636190af475') center/cover; 
+} 
+.math 
+{ 
+    background: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb') center/cover; 
+} 
+.databases 
+{ 
+    background: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31') center/cover; 
+} 
+.programming 
+{ 
+    background: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c') center/cover; 
+} 
+.webdev 
+{ 
+    background: url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6') center/cover; 
+} 
+.graduate 
+{ 
+    background: url('https://images.unsplash.com/photo-1523580846011-d3a5bc25702b') center/cover; 
+} 
+/* RESOURCES */ 
+.resources 
+{ 
+    display: none; 
+    margin: 40px; 
+    padding: 30px; 
+    background: white; 
+    border-radius: 20px; 
+} 
+.resources h2 
+{ 
+    color: #9333ea; 
+    margin-bottom: 15px; 
+} 
+.resources ul 
+{ 
+    line-height: 2; 
+} 
+.resources a 
+{ 
+    text-decoration: none; 
+    color: #7e22ce; 
+    font-weight: bold; 
+} 
+.resources a:hover 
+{ 
+    text-decoration: underline; 
+} 
+/* NAVIGATION */ 
+.nav-buttons 
+{ 
+    display: flex; 
+    justify-content: space-between; 
+    margin: 40px; 
+} 
+.nav-buttons button 
+{ 
+    padding: 12px 25px; 
+    border: none; 
+    border-radius: 10px; 
+    background: #D8B4F8; 
+    color: white; 
+    cursor: pointer; 
+    font-weight: bold; 
+}
+.nav-buttons button:hover 
+{ 
+    background: #c084fc; 
+} 
+/* Responsive */ 
+@media (max-width: 900px) 
+{ 
+    .container 
+    { 
+        grid-template-columns: 1fr; 
+    } 
+} 
+</style>
+</head>
+<body>
+
+<header>
+🎓 Subjects
+</header>
+
+<div class="container">
+    <div class="card architecture" onclick="showResources('architecture')">
+        <h2>💻 Computer Architecture</h2>
+    </div>
+    <div class="card math" onclick="showResources('math')">
+        <h2>📐 Mathematics</h2>
+    </div>
+    <div class="card databases" onclick="showResources('databases')">
+        <h2>🗄 Databases</h2>
+    </div>
+    <div class="card programming" onclick="showResources('programming')">
+        <h2>👨‍💻 Programming</h2>
+    </div>
+    <div class="card webdev" onclick="showResources('webdev')">
+        <h2>🌐 Web Development</h2>
+    </div>
+    <div class="card graduate" onclick="showResources('graduate')">
+        <h2>🎓 Graduate Skills</h2>
+    </div>
+</div>
+
+<div id="resourcesSection" class="resources"></div>
+
+<div class="nav-buttons">
+    <button onclick="window.location='index.html'">⬅ Previous Page</button>
+    <button onclick="window.location='forum.html'">Next Page ➡</button>
+</div>
+
+<script>
+function showResources(subject) 
+{ 
+    const section = document.getElementById("resourcesSection"); 
+    const content = { 
+        architecture: ` 
+            <h2>Computer Architecture Study Links</h2> 
+            <ul> 
+                <li><a href="https://www.geeksforgeeks.org/computer-organization-and-architecture-tutorials/" target="_blank">GeeksforGeeks</a></li> 
+                <li><a href="https://www.tutorialspoint.com/computer_organization/index.htm" target="_blank">TutorialsPoint</a></li> 
+                <li><a href="https://www.javatpoint.com/computer-organization-and-architecture-tutorial" target="_blank">Javatpoint</a></li> 
+            </ul> 
+        `, 
+        math: ` 
+            <h2>Mathematics Study Links</h2> 
+            <ul> 
+                <li><a href="https://www.khanacademy.org/math" target="_blank">Khan Academy</a></li> 
+                <li><a href="https://www.wolframalpha.com/" target="_blank">Wolfram Alpha</a></li> 
+                <li><a href="https://brilliant.org/" target="_blank">Brilliant</a></li> 
+            </ul> 
+        `, 
+        databases: ` 
+            <h2>Database Study Links</h2> 
+            <ul> 
+                <li><a href="https://www.w3schools.com/sql/" target="_blank">W3Schools SQL</a></li> 
+                <li><a href="https://www.geeksforgeeks.org/dbms/" target="_blank">GeeksforGeeks DBMS</a></li> 
+                <li><a href="https://www.mysqltutorial.org/" target="_blank">MySQL Tutorial</a></li> 
+            </ul> 
+        `, 
+        programming: ` 
+            <h2>Programming Study Links</h2> 
+            <ul> 
+                <li><a href="https://www.freecodecamp.org/" target="_blank">FreeCodeCamp</a></li> 
+                <li><a href="https://www.codecademy.com/" target="_blank">Codecademy</a></li> 
+                <li><a href="https://www.hackerrank.com/" target="_blank">HackerRank</a></li> 
+            </ul> 
+        `, 
+        webdev: ` 
+            <h2>Web Development Study Links</h2> 
+            <ul> 
+                <li><a href="https://developer.mozilla.org/" target="_blank">MDN Web Docs</a></li> 
+                <li><a href="https://www.w3schools.com/" target="_blank">W3Schools</a></li> 
+                <li><a href="https://css-tricks.com/" target="_blank">CSS Tricks</a></li>
+            </ul> 
+        `, 
+        graduate: ` 
+            <h2>Graduate Skills Study Links</h2> 
+            <ul> 
+                <li><a href="https://www.linkedin.com/learning/" target="_blank">LinkedIn Learning</a></li> 
+                <li><a href="https://www.coursera.org/" target="_blank">Coursera</a></li> 
+                <li><a href="https://www.indeed.com/career-advice" target="_blank">Indeed Career Advice</a></li> 
+            </ul> 
+        ` 
+    }; 
+    section.innerHTML = content[subject]; 
+    section.style.display = "block"; 
+    window.scrollTo({ 
+        top: section.offsetTop, 
+        behavior: "smooth" 
+    }); 
+} 
+function previousPage() 
+{ 
+    window.history.back(); 
+} 
+function nextPage() 
+{ 
+    window.history.forward(); 
+} 
+</script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Support</title>
+
+<style>
+/* YOUR ORIGINAL CSS (UNCHANGED) */
+body{
+font-family: Arial, Helvetica, sans-serif;
+margin:0;
+background:#f4f4f4;
+}
+
+header{
+background:#D8B4F8;
+text-align:center;
+padding:10px;
+width:90%;
+margin:15px auto 10px auto;
+border-radius:15px;
+}
+
+header h1{
+font-size:25px;
+margin:0;
+font-weight:bold;
+}
+
+.subtitle{
+font-size:15px;
+margin-top:8px;
+}
+
+.container{
+display:flex;
+width:90%;
+margin:0 auto 20px auto;
+border-radius:15px;
+overflow:hidden;
+}
+
+.sidebar{
+width:40%;
+background:#87CEEB;
+padding:20px;
+height:calc(100vh - 120px);
+overflow-y:auto;
+}
+
+#searchBar{
+width:100%;
+padding:10px;
+border-radius:6px;
+border:none;
+margin-bottom:20px;
+}
+
+.teacher{
+background:white;
+padding:15px;
+margin-bottom:20px;
+border-radius:10px;
+box-shadow:0px 2px 6px rgba(0,0,0,0.15);
+}
+
+.main-content{
+width:60%;
+padding:40px;
+background:white;
+}
+
+.back-btn, .next-btn{
+position:fixed;
+bottom:20px;
+padding:12px 18px;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+border:none;
+color:white;
+}
+
+.back-btn{
+left:30px;
+background:rgb(239, 135, 245); ;
+}
+
+.next-btn{
+right:30px;
+background:rgb(239, 135, 245); ;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>Student Support Portal</h1>
+</header>
+
+<div class="container">
+
+<div class="sidebar">
+
+<h2>Teacher Contacts</h2>
+<input type="text" id="searchBar" placeholder="Search module...">
+
+<div class="teacher" data-module="programming">
+<h3>Programming</h3>
+<p><b>Teacher:</b> Dr. James Carter</p>
+<p>Email: james.carter@university.edu</p>
+</div>
+
+<div class="teacher" data-module="web development">
+<h3>Web Development</h3>
+<p><b>Teacher:</b> Sarah Ahmed</p>
+<p>Email: sarah.ahmed@university.edu</p>
+</div>
+
+<div class="teacher" data-module="graduate skills">
+<h3>Graduate Skills</h3>
+<p><b>Teacher:</b> Michael Brown</p>
+<p>Email: michael.brown@university.edu</p>
+</div>
+
+</div>
+
+<div class="main-content">
+<h2>Student Academic Support</h2>
+<p>This page provides contact details for lecturers.</p>
+</div>
+
+</div>
+
+<!-- NAVIGATION (ONLY THING ADDED) -->
+<button class="back-btn" onclick="window.location='whiteboard.html'">⬅ Previous</button>
+<button class="next-btn" onclick="window.location='index.html'">Home</button>
+
+<script>
+/* YOUR ORIGINAL JS */
+const searchBar = document.getElementById("searchBar");
+
+searchBar.addEventListener("keyup", function(){
+let value = searchBar.value.toLowerCase();
+let teachers = document.querySelectorAll(".teacher");
+
+teachers.forEach(function(teacher){
+let module = teacher.getAttribute("data-module");
+
+if(module.includes(value)){
+teacher.style.display="block";
+}else{
+teacher.style.display="none";
+}
+});
+});
+</script>
+
+</body>
+</html>
